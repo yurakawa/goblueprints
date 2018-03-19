@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/gomniauth/providers/github"
 	"github.com/stretchr/gomniauth/providers/google"
 	"github.com/stretchr/objx"
-	"github.com/yurakawa/goblueprints/chapter2/trace"
+	"github.com/yurakawa/goblueprints/chapter3/trace"
 )
 
 // templは1つのテンプレートを表します

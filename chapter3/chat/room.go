@@ -6,7 +6,7 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/stretchr/objx"
-	"github.com/yurakawa/goblueprints/chapter2/trace" // traceパッケージを$GOPATH/src/mycode/traceにおいているなら mycode/traceをインポートすればいい
+	"github.com/yurakawa/goblueprints/chapter3/trace" // traceパッケージを$GOPATH/src/mycode/traceにおいているなら mycode/traceをインポートすればいい
 )
 
 type room struct {
