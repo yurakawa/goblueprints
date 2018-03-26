@@ -1,11 +1,7 @@
 package main
 
 import (
-	"crypto/md5"
 	"errors"
-	"fmt"
-	"io"
-	"strings"
 )
 
 // ErrNoAvatarURL はAvatarインスタンスがアバターのURLを返すことができない場合に発生するエラー
@@ -41,13 +37,9 @@ var UseGravatar GravatarAvatar
 
 // GetAvatarURL Gravatarのガイドラインに則りメールアドレスに含まれる大文字を小文字に変換し、その結果に対してMD5アルゴリズムを適用してハッシュ値を算出してURLに埋め込む
 func (GravatarAvatar) GetAvatarURL(c *client) (string, error) {
-	if email, ok := c.userData["email"]; ok {
-		// TODO: (string)って書き方何??
-		// TODO: アバターのURLが必要になるたびにハッシュ値を計算している。
-		if emailStr, ok := email.(string); ok {
-			m := md5.New()
-			io.WriteString(m, strings.ToLower(emailStr))
-			return fmt.Sprintf("//www.gravatar.com/avatar/%x", m.Sum(nil)), nil
+	if userid, ok := c.userData["userid"]; ok {
+		if useridStr, ok := userid.(string); ok {
+			return "//www.gravatar.com/avatar/" + useridStr, nil
 		}
 	}
 	return "", ErrNoAvatarURL
