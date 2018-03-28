@@ -1,53 +1,55 @@
 package main
 
 import (
-	"crypto/md5"
 	"errors"
-	"fmt"
-	"io"
-	"strings"
+	"io/ioutil"
+	"path/filepath"
 )
 
 // ErrNoAvatarURL はAvatarインスタンスがアバターのURLを返すことができない場合に発生するエラー
 var ErrNoAvatarURL = errors.New("caht: アバターのURLを取得できません。")
 
-// Avatar はユーザのプロフィール画像を表す型
+// Avatar はユーザーのプロフィール画像を表す型です。
 type Avatar interface {
-	GetAvatarURL(c *client) (string, error)
+	// GetAvatarURLは指定されたクライアントのアバターのURLを返します。
+	// 問題が発生した場合にはエラーを返します。特に、URLを取得できなかった
+	// 場合にはErrNoAvatarURLを返します。
+	GetAvatarURL(ChatUser) (string, error)
 }
 
-// AuthAvatar を空の構造体として定義
 type AuthAvatar struct{}
 
-// UseAuthAvatar あとでこの変数をAvatar型として定義されているフィールドにセットする
 var UseAuthAvatar AuthAvatar
 
-// GetAvatarURL は指定されたクライアントのアバターのURLを返す
-// 問題が発生した場合にはエラーを返す。特に、URLを取得できなかった場合にはErrNoAvatarURLを返す
-func (AuthAvatar) GetAvatarURL(c *client) (string, error) {
-	if url, ok := c.userData["avatar_url"]; ok {
-		if urlStr, ok := url.(string); ok {
-			return urlStr, nil
-		}
+func (AuthAvatar) GetAvatarURL(u ChatUser) (string, error) {
+	url := u.AvatarURL()
+	if url != "" {
+		return url, nil
 	}
 	return "", ErrNoAvatarURL
 }
 
-// GravatarAvatar はGravatar用の構造体
 type GravatarAvatar struct{}
 
-// UseGravatar あとでこの変数をAvatar型として定義されているフィールドにセットする
 var UseGravatar GravatarAvatar
 
-// GetAvatarURL Gravatarのガイドラインに則りメールアドレスに含まれる大文字を小文字に変換し、その結果に対してMD5アルゴリズムを適用してハッシュ値を算出してURLに埋め込む
-func (GravatarAvatar) GetAvatarURL(c *client) (string, error) {
-	if email, ok := c.userData["email"]; ok {
-		// TODO: (string)って書き方何??
-		// TODO: アバターのURLが必要になるたびにハッシュ値を計算している。
-		if emailStr, ok := email.(string); ok {
-			m := md5.New()
-			io.WriteString(m, strings.ToLower(emailStr))
-			return fmt.Sprintf("//www.gravatar.com/avatar/%x", m.Sum(nil)), nil
+func (GravatarAvatar) GetAvatarURL(u ChatUser) (string, error) {
+	return "//www.gravatar.com/avatar/" + u.UniqueID(), nil
+}
+
+type FileSystemAvatar struct{}
+
+var UseFileSystemAvatar FileSystemAvatar
+
+func (FileSystemAvatar) GetAvatarURL(u ChatUser) (string, error) {
+	if files, err := ioutil.ReadDir("avatars"); err == nil {
+		for _, file := range files {
+			if file.IsDir() {
+				continue
+			}
+			if match, _ := filepath.Match(u.UniqueID()+"*", file.Name()); match {
+				return "/avatars/" + file.Name(), nil
+			}
 		}
 	}
 	return "", ErrNoAvatarURL
