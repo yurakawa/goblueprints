@@ -17,7 +17,10 @@ import (
 	"github.com/yurakawa/goblueprints/chapter3/trace"
 )
 
-var avatars Avatar = UseFileSystemAvatar
+var avatars Avatar = TryAvatars{
+	UseFileSystemAvatar,
+	UseAuthAvatar,
+	UseGravatar}
 
 // templは1つのテンプレートを表します
 type templateHandler struct {
