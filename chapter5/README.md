@@ -38,3 +38,17 @@ nsqdを起動し、どのnsqlookupdを利用するか指定する
 mongodを起動してデータ関連のサービスを実行する
 
     mongod --dbpath ./db
+
+テスト用の調査項目を作成する
+
+    mongoコマンドを実行後
+    > use ballots
+    > db.polls.insert({"title":"今の気分は?","options":["happy","sad","fail","win"]})
+    Ctrl + C
+
+実行
+
+    nsq_tail --topic="votes" --lookupd-http-address=localhost:4160
+    go build -o twittervotes
+    ./twittervotes
+
