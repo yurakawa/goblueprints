@@ -34,7 +34,7 @@ func main() {
 	}
 	defer closedb()
 
-	// 胥吏を開始します
+	// 処理を開始します
 	votes := make(chan string) // 投票結果のためのチャネル
 	publisherStoppedChan := publishVotes(votes)
 	twitterStoppedChan := startTwitterStream(stopChan, votes)
@@ -73,6 +73,7 @@ type poll struct {
 	Options []string
 }
 
+// すべての投票での選択肢を取得
 func loadOptions() ([]string, error) {
 	var options []string
 	// db変数を使い、ballotsデータベースに含まれるコレクションpollsを取り出す

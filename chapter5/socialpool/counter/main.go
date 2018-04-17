@@ -5,10 +5,15 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/signal"
 	"sync"
+	"syscall"
+	"time"
 
 	"github.com/bitly/go-nsq"
+
 	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 var fatalErr error
@@ -18,6 +23,8 @@ func fatal(e error) {
 	flag.PrintDefaults()
 	fatalErr = e
 }
+
+const updateDuration = 1 * time.Second
 
 func main() {
 	defer func() {
@@ -37,7 +44,7 @@ func main() {
 		log.Println("データベース接続を閉じます...")
 		db.Close()
 	}()
-	pollData := db.DB("localhost").C("polls")
+	pollData := db.DB("ballots").C("polls")
 
 	var countsLock sync.Mutex
 	var counts map[string]int
@@ -58,7 +65,7 @@ func main() {
 		counts[vote]++
 		return nil
 	}))
-	if err := q.ConnectToNSQLookupd("localhost:4160"); err != nil {
+	if err := q.ConnectToNSQLookupd("localhost:4161"); err != nil {
 		fatal(err)
 		return
 	}

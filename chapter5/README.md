@@ -27,28 +27,20 @@ https://github.com/matryer/goblueprints/blob/master/chapter5/README.md
     go get gopkg.in/mgo.v2
 
 ## 実行環境の起動
-nsqlookupdを起動し、nsqdのTCPポート(デフォルトは4160)を確認する
+以下をそれぞれ別のウインドウから実行する
 
     nsqlookupd
-    
-nsqdを起動し、どのnsqlookupdを利用するか指定する
-
-    nsqd --lookupd-tcp-address=localhost:4160
-
-mongodを起動してデータ関連のサービスを実行する
-
+    nsqd  --lookupd-tcp-address=127.0.0.1:4160
     mongod --dbpath ./db
-
-テスト用の調査項目を作成する
-
-    mongoコマンドを実行後
+    
+    # mongoコマンドを実行後
+    ballotsデータベースのpollsコレクションに新たな項目を追加する。
     > use ballots
     > db.polls.insert({"title":"今の気分は?","options":["happy","sad","fail","win"]})
     Ctrl + C
 
-実行
-
-    nsq_tail --topic="votes" --lookupd-http-address=localhost:4160
-    go build -o twittervotes
+    // 不要? nsq_tail  --topic="votes" --lookupd-http-address=localhost:4161
+    
     ./twittervotes
+    ./counter
 

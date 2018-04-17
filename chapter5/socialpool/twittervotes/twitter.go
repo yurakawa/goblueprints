@@ -12,8 +12,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/garyburd/go-oauth/oauth"
 	"github.com/joeshaw/envdecode"
-	"github.com/matryer/go-oauth/oauth"
 )
 
 var conn net.Conn
@@ -104,14 +104,9 @@ func readFromTwitter(votes chan<- string) {
 		log.Println("選択肢の読み込みに失敗しました")
 		return
 	}
-	u, err := url.Parse("https://stream.twitter.com/1.1/statuses/filter.json")
-	if err != nil {
-		log.Println("URLの解析に失敗しました:", err)
-		return
-	}
 	query := make(url.Values)
 	query.Set("track", strings.Join(options, ","))
-	req, err := http.NewRequest("POST", u.String(), strings.NewReader(query.Encode()))
+	req, err := http.NewRequest("POST", "https://stream.twitter.com/1.1/statuses/filter.json", strings.NewReader(query.Encode()))
 	if err != nil {
 		log.Println("検索のリクエストの作成に失敗しました:", err)
 		return
