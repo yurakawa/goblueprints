@@ -23,7 +23,7 @@ func main() {
 	}
 	defer db.Close()
 	mux := http.NewServeMux()
-	mux.HandleFunc("/polls/", withCORS(withVars(withData(db, withAPIKey((handl))))))
+	mux.HandleFunc("/polls/", withCORS(withVars(withData(db, withAPIKey(handlePolls)))))
 	log.Println("Webサーバを開始します:", *addr)
 	graceful.Run(*addr, 1*time.Second, mux)
 	log.Println("停止します...")
@@ -48,7 +48,6 @@ func withData(d *mgo.Session, f http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		thisDb := d.Copy()
 		defer thisDb.Close()
-		// ballotsデータベースへの参照をdb変数にセット
 		SetVar(r, "db", thisDb.DB("ballots"))
 		f(w, r)
 	}

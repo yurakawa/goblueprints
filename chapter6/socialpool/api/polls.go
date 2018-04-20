@@ -42,7 +42,7 @@ func handlePollsGet(w http.ResponseWriter, r *http.Request) {
 		q = c.FindId(bson.ObjectIdHex(p.ID))
 	} else {
 		// すべての調査項目のリスト
-		q = c.FindId(nil)
+		q = c.Find(nil)
 	}
 	var result []*poll
 	if err := q.All(&result); err != nil {
