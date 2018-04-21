@@ -25,6 +25,11 @@ func handlePolls(w http.ResponseWriter, r *http.Request) {
 	case "DELETE":
 		handlePollsDelete(w, r)
 		return
+	case "OPTIONS":
+		// pre-flight
+		w.Header().Add("Access-Control-Allow-methods", "DELETE")
+		respond(w, r, http.StatusOK, nil)
+		return
 	}
 
 	// 未対応のHTTPメソッド
