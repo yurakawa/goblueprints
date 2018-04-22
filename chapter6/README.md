@@ -15,3 +15,25 @@
 |  GET /polls/{id} | 指定された調査項目を読み出 | 特定の調査項目について、その詳細や投票結果を示す |
 |  POST /polls/ | 調査項目を作成する | 調査項目を新規作成する |
 |  DELETE /polls/{id} | 調査項目を削除する | 指定された調査項目を削除する |
+
+# API設計での目標
+
+- 我々のAPIで待ち受けを行うHTTPアドレスとポート番号やMongoDBインスタンスのアドレスは、コマンドライン引数を通じて指定できるようにし、再コンパイルなしに変更できるようにします。
+- 終了を指示されたら、穏やかに停止処理を行います。終了のシグナルを受信した際に処理中（in-flightとも呼ばれます）のリクエストがあったら、これらの処理を完了させてから停止します。
+- 状態の変化をログに記録し、エラーは適切に報告します。
+
+
+# brew でインストールした mongodb を起動する
+brew services start mongodb
+
+# API テスト
+- GET
+curl -X GET http://localhost:8080/polls/?key=abc123
+
+
+- POST
+curl --data '{"title":"調査のテスト","options":["one","two","three"]}' -X POST http://localhost:8080/polls/?key=abc123
+
+- DELETE
+curl -X DELETE http://localhost:8080/polls/${id}?key=abc123
+
