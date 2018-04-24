@@ -7,6 +7,7 @@ type j struct {
 	PlaceTypes []string
 }
 
+// Journeys represents the pre-set journeys data.
 var Journeys = []interface{}{
 	&j{Name: "ロマンティック", PlaceTypes: []string{"park", "bar", "movie_theater", "restaurant", "florist", "taxi_stand"}},
 	&j{Name: "ショッピング", PlaceTypes: []string{"department_store", "cafe", "clothing_store", "jewelry_store", "shoe_store"}},
