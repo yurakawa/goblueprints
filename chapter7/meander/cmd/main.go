@@ -12,7 +12,7 @@ func main() {
 	// Go 1.5からは不要
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	// meander.APIKEY = "TODO"
+	meander.APIKey = ""
 	http.HandleFunc("/journeys", func(w http.ResponseWriter, r *http.Request) {
 		respond(w, r, meander.Journeys)
 	})
