@@ -1,5 +1,7 @@
 package meander
 
+// APIKey is the Google Places API key that will be used
+// to make requests to the service.
 var APIKey string
 
 // Place represents a single place.
