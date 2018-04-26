@@ -104,7 +104,7 @@ func (q *Query) Run() []interface{} {
 				return
 			}
 			if len(response.Results) == 0 {
-				log.Fatal("施設が見つかりませんでした：", err)
+				log.Println("施設が見つかりませんでした：", types)
 				return
 			}
 			for _, result := range response.Results {
