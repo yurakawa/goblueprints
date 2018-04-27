@@ -65,7 +65,7 @@ type Query struct {
 }
 
 func (q *Query) find(types string) (*googleResponse, error) {
-	u := "http://maps.googleapis.com/maps/api/place/nearbysearch/json"
+	u := "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 	vals := make(url.Values)
 	vals.Set("location", fmt.Sprintf("%g,%g", q.Lat, q.Lng))
 	vals.Set("radius", fmt.Sprintf("%d", q.Radius))

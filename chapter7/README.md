@@ -53,7 +53,13 @@ const: 施設での費用価格帯($$$$が最も高価)
 ]
 ```
 
+### meander リクエスト例
+http://localhost:8080/recommendations?lat=51.520707&lng=-0.153809&radius=5000&journey=cafe|bar|casino|restaurant&cost=$...$$$
 
 ### GooGle Places API ドキュメント
 https://developers.google.com/places/documentation/supported_types
+
+### geo 確認
+http://mygeoposition.com
+
 
