@@ -4,9 +4,18 @@ import (
 	"errors"
 	"flag"
 	"log"
+	"strings"
 
 	"github.com/matryer/filedb"
 )
+
+/*
+  backup command
+  usage:
+    backup -db=./backupdata.db add {path} [{path} {path}...]
+    backup -db=./backupdata.db remove {path} [{path} {path}...]
+    backup -db=./backupdata.db list
+*/
 
 type path struct {
 	Path string
@@ -42,5 +51,11 @@ func main() {
 	if err != nil {
 		fatalErr = err
 		return
+	}
+
+	switch strings.ToLower(args[0]) {
+	case "list":
+	case "add":
+	case "remove":
 	}
 }
