@@ -6,6 +6,9 @@ import (
 	"log"
 	"strings"
 
+	"fmt"
+
+	"github.com/hashicorp/packer/common/json"
 	"github.com/matryer/filedb"
 )
 
@@ -20,6 +23,10 @@ import (
 type path struct {
 	Path string
 	Hash string
+}
+
+func (p path) String() string {
+	return fmt.Sprintf("%s [%s]", p.Path, p.Hash)
 }
 
 func main() {
@@ -55,6 +62,19 @@ func main() {
 
 	switch strings.ToLower(args[0]) {
 	case "list":
+		var path path
+		col.ForEach(func(i int, data []byte) bool {
+			err := json.Unmarshal(data, &path)
+			if err != nil {
+				fatalErr = err
+				return true
+			}
+			fmt.Printf("= %s\n", path)
+			// Returning false is the result of following the API of filedb.
+			// When returning true, processing to subsequent items is canceled,
+			// so false is returned so that all items are displayed.
+			return false
+		})
 	case "add":
 	case "remove":
 	}
