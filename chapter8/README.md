@@ -26,3 +26,23 @@ backup/   (パッケージ)
       |-- backup/ (ユーザー向けツール)
       `-- backupd/ (デーモン)
 ```
+
+# ビルド
+cd ./chapter8/backup/cmds/backup
+go build -o backup
+
+# 実行例
+- 追加
+
+        ./backup -db=./backupdata add ./test ./test2
+        ./backup -db=./backupdata add ./test3
+
+- リスト
+
+        ./backup -db=./backupdata list
+
+- 削除
+
+        ./backup -db=./backupdata remove ./test3
+        ./backup -db=./backupdata list
+
