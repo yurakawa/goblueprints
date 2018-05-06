@@ -27,11 +27,13 @@ backup/   (パッケージ)
       `-- backupd/ (デーモン)
 ```
 
-# ビルド
-cd ./chapter8/backup/cmds/backup
-go build -o backup
+# backupd
+### ビルド
 
-# 実行例
+        cd ./chapter8/backup/cmds/backup
+        go build -o backup
+
+### 実行例
 - 追加
 
         ./backup -db=./backupdata add ./test ./test2
@@ -45,4 +47,15 @@ go build -o backup
 
         ./backup -db=./backupdata remove ./test3
         ./backup -db=./backupdata list
+
+
+# backupd
+### ビルド
+
+        cd ./chapter8/backup/cmds/backupd
+        go build -o backupd
+
+### 実行例
+
+        ./backupd -db="../backup/backupdata/" -archive="./archive" -interval=5
 
